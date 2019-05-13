@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/03/29 11:21:56 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/05/13 16:03:02 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ INC += -I $(LIB_PATH)
 HEAD = ''
 
 #### FILES FROM LIB ####
-LIB_FILES = \
+LIB_FILES = ft_bzero.s		\
 			ft_isalpha.s	\
 			ft_isdigit.s	\
 			ft_isalnum.s	\

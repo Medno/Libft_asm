@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/13 16:01:17 by pchadeni          #+#    #+#             */
+/*   Updated: 2019/05/13 17:51:07 by pchadeni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -7,6 +20,7 @@
 #define EOC "\033[0m"
 #define BOLD "\033[01m"
 
+void	ft_bzero(void *s, size_t n);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -61,6 +75,21 @@ int	test_strlen(void)
 	return (0);
 }
 
+int	test_bzero(void)
+{
+	char *str = "I'm not null";
+
+	ft_bzero(NULL, 10);
+	ft_bzero(str, 0);
+	printf("Bzero of size 0: |%s|\n", str);
+	printf("Bzero incoming...\n");
+	ft_bzero(str, 5);
+	printf("Bzero exited\n");
+	write(1, str, strlen(str));
+	printf("\n");
+	return (0);
+}
+
 int	main(void)
 {
 	test_isfn(ft_isalpha, isalpha, "ft_isalpha");
@@ -71,6 +100,7 @@ int	main(void)
 	test_isfn(ft_tolower, tolower, "ft_tolower");
 	test_isfn(ft_toupper, toupper, "ft_toupper");
 
+	test_bzero();
 	test_strlen();
 	return (0);
 }
