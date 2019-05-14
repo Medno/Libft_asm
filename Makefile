@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/05/13 16:03:02 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/05/14 15:30:48 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,10 @@ LIB_FILES = ft_bzero.s		\
 			ft_tolower.s	\
 			ft_toupper.s	\
 			ft_strlen.s		\
-			ft_puts.s
+			ft_puts.s		\
+			ft_strcat.s		\
+			ft_memset.s		\
+			ft_memcpy.s
 
 MAIN = $(addprefix $(SRCS_PATH)/, main.c)
 #------Path------#
