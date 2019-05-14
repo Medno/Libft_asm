@@ -1,7 +1,3 @@
-section .data
-	SYS_STDOUT	equ	1
-	SYS_WRITE	equ	0x02000004
-
 section .text
 	global _ft_strlen
 
@@ -9,23 +5,15 @@ _ft_strlen:
 	push rbp
 	mov rbp, rsp
 
-	cmp rdi, 0
-	jle _null
+	mov rcx, -1
+	mov rbx, rdi
+	xor al, al
+	cld
+	repnz scasb
 	mov rax, rdi
-	
-_while:
-	cmp byte [rax], 0
-	jz _return
-	inc rax
-	jmp _while
+	sub rax, rbx
+	dec rax
 
-_null:
-	xor rax, rax
-	pop rbp
-	ret
-
-_return:
-	sub rax, rdi
-
+	mov rsp, rbp
 	pop rbp
 	ret

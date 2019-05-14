@@ -30,6 +30,7 @@ int		ft_isprint(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 size_t	ft_strlen(const char *s);
+int		ft_puts(const char *s);
 
 int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 {
@@ -63,10 +64,14 @@ int	test_strlen(void)
 
 	while (i < 5)
 	{
-		if (ft_strlen(array[i]) == 1000)
+		if (i != 0 && ft_strlen(array[i]) != strlen(array[i]))
 		{
 			printf("%sError%s in %s%s%s function for index %d. Expected : %zu, Get: %zu\n",
 			RED, EOC, BOLD, "ft_strlen", EOC, i, strlen(array[i]), ft_strlen(array[i]));
+			printf("Str: |%s|\n", array[i]);
+			printf("len: |%zu|\n", ft_strlen(array[i]));
+			printf("len: |%zu|\n", ft_strlen(array[i]));
+			printf("len: |%zu|\n", strlen(array[i]));
 			return (1);
 		}
 		i++;
@@ -77,16 +82,17 @@ int	test_strlen(void)
 
 int	test_bzero(void)
 {
-	char *str = "I'm not null";
+	char *str = strdup("I'm not null");
+	char buf[6] = "*****";
 
-	ft_bzero(NULL, 10);
-	ft_bzero(str, 0);
 	printf("Bzero of size 0: |%s|\n", str);
+	ft_bzero(buf, 5);
+	write(1, buf, 5);
 	printf("Bzero incoming...\n");
 	ft_bzero(str, 5);
 	printf("Bzero exited\n");
 	write(1, str, strlen(str));
-	printf("\n");
+	printf("%s%s%s tests passed with %ssuccess%s\n", BOLD, "ft_bzero", EOC, GREEN, EOC);
 	return (0);
 }
 
@@ -102,5 +108,9 @@ int	main(void)
 
 	test_bzero();
 	test_strlen();
+	puts("");
+	ft_puts(NULL);
+	ft_puts("");
+	ft_puts("Toto a la plage");
 	return (0);
 }
