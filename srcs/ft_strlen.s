@@ -5,13 +5,14 @@ _ft_strlen:
 	push rbp
 	mov rbp, rsp
 
+	push rdi
 	mov rcx, -1
-	mov rbx, rdi
-	xor al, al
+	xor rax, rax
 	cld
 	repnz scasb
 	mov rax, rdi
-	sub rax, rbx
+	pop rdi
+	sub rax, rdi
 	dec rax
 
 	mov rsp, rbp
