@@ -41,6 +41,8 @@ void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 char	*ft_strdup(const char *s1);
 void	ft_cat(int fd);
+int		ft_putchar(int c);
+int		ft_atoi(char *str);
 
 void	print_success(char *f_name);
 void	print_error_s(char *exp, char *res, char *f_name);

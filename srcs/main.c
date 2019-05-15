@@ -93,7 +93,7 @@ int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 	print_success(f_name);
 	return (0);
 }
-
+/*
 int	test_puts(void)
 {
 	int		i = 0;
@@ -119,7 +119,7 @@ int	test_puts(void)
 	printf("Value of ft_puts: %d\n", ft_puts("toto a la montagne"));
 	return (0);
 }
-
+*/
 int	test_strlen(void)
 {
 	char *array[] = {
@@ -207,15 +207,152 @@ int	test_strdup(void)
 
 int	test_cat(void)
 {
-	int	filefd;
+	int	output;
+	int	input;
+	int out = dup(1);
 
-	if ((filefd = open(__FILE__, O_RDONLY)) == -1)
+	if ((output = open("./cat_to_diff", O_WRONLY | O_TRUNC | O_CREAT, 0644)) == -1)
 		return (1);
-	ft_cat(filefd);
-	if (close(filefd) == -1)
+	if ((input = open("./srcs/ft_cat.s", O_RDONLY)) == -1)
 		return (1);
-//	ft_cat(-1);
-	ft_cat(0);
+
+	dup2(output, 1);
+	ft_cat(input);
+	if (close(output) == -1)
+		return (1);
+	if (close(input) == -1)
+		return (1);
+	dup2(out, 1);
+	if (system("diff ./cat_to_diff ./srcs/ft_cat.s"))
+		printf("Error on ft_cat\n");
+	else
+		print_success("ft_cats");
+	system("rm -rf ./cat_to_diff");
+	
+	return (0);
+}
+
+int	test_puts(int fd)
+{
+	char	*array[] = {
+		NULL,
+		"",
+		"Martine a la plage",
+		"\n\t\0\t",
+		"Martine a la montagne",
+		" Martine avec des	tabulations		"
+	};
+	char	buf[2048];
+	int		nb = sizeof(array) / sizeof(array[0]);
+	size_t	len;
+
+	while (nb != 0)
+	{
+		len = ft_strlen(array[nb - 1]);
+		ft_puts(array[nb - 1]);
+		if (read(fd, buf, len + 1) != -1)
+		{
+			if (strncmp(array[nb - 1], buf, len))
+				return (1);
+		}
+		nb--;
+	}
+	return (0);
+}
+
+int	test_putchar(int fd)
+{
+	char	buf[1];
+	int		i = -128;
+	int		res;
+	
+	while (i < 127)
+	{
+		res = ft_putchar(i);
+		if (read(fd, buf, 1) != -1)
+		{
+			if (i != buf[0])
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	write_on_fd(int (*f)(int), char *f_name)
+{
+	int	fds[2];
+	int	out;
+	int	res;
+
+	if ((out = dup(1)) == -1)
+	{
+		printf("Error: cannot duplicate stdout\n");
+		return (1);
+	}
+	if (pipe(fds) == -1)
+	{
+		printf("Error: cannot create pipe\n");
+		return (1);
+	}
+	if ((dup2(fds[1], 1)) == -1)
+	{
+		printf("Error: cannot duplicate writing fd\n");
+		return (1);
+	}
+	res = (*f)(fds[0]);
+	if (close(fds[0]) == -1 || close(fds[1]) == -1)
+	{
+		printf("Error: cannot close fd\n");
+		return (1);
+	}
+	if ((dup2(out, 1)) == -1)
+	{
+		printf("Error: cannot duplicate old stdout\n");
+		return (1);
+	}
+	if (res)
+		printf("Error in %s\n", f_name);
+	else
+		print_success(f_name);
+	return (0);
+}
+
+int	test_atoi(void)
+{
+	char *numbers[] = {
+		"",
+		"123",
+		"-123",
+		"+345",
+		" 3-45",
+		"    3 -45",
+		" +   3 -45",
+		" -   3 -45",
+		"    -3 -45",
+		"    +-3 -45",
+		"+3-45",
+		"--234",
+		"+-345"
+	};
+	int	len;
+	int	i = 0;
+	int	exp;
+	int	res;
+	int	error;
+
+	len = sizeof(numbers) / sizeof(numbers[0]);
+	error = 0;
+	while (i < len)
+	{
+		res = ft_atoi(numbers[i]);
+		exp = atoi(numbers[i]);
+		if (res != exp && (error = 1))
+			print_error_i(exp, res, "ft_atoi");
+		i++;
+	}
+	if (!error)
+		print_success("ft_atoi");
 	return (0);
 }
 
@@ -231,11 +368,14 @@ int	main(void)
 
 	test_bzero();
 	test_strlen();
-	test_puts();
+//	test_puts();
 	test_strcat();
 	test_memset();
 	test_memcpy();
-	test_strdup();
+	//test_strdup();
 	test_cat();
+	write_on_fd(test_puts, "ft_puts");
+	write_on_fd(test_putchar, "ft_putchar");
+	test_atoi();
 	return (0);
 }
