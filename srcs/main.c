@@ -34,6 +34,7 @@ int		ft_puts(const char *s);
 char	*ft_strcat(char *restrict s1, const char *restrict s2);
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
+char	*ft_strdup(const char *s1);
 
 int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 {
@@ -165,6 +166,23 @@ int	test_memcpy(void)
 	return (0);
 }
 
+int	test_strdup(void)
+{
+//	char	*str;
+	char	*to_dup = "Did the test passed ?";
+
+	printf("Len: %zu\n", ft_strlen(to_dup));
+	printf("str: %s\n", ft_strdup(to_dup));
+/*	str = ft_strdup(to_dup);
+	if (strcmp(str, to_dup))
+		printf("%sError%s in %s%s%s function. Expected : %s, Get: %s\n",
+		RED, EOC, BOLD, "ft_strdup", EOC, to_dup, str);
+	else
+		printf("%s%s%s tests passed with %ssuccess%s\n",
+			BOLD, "ft_strdup", EOC, GREEN, EOC);
+*/	return (0);
+}
+
 int	main(void)
 {
 	test_isfn(ft_isalpha, isalpha, "ft_isalpha");
@@ -181,5 +199,6 @@ int	main(void)
 	test_strcat();
 	test_memset();
 	test_memcpy();
+	test_strdup();
 	return (0);
 }

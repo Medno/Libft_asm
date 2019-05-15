@@ -60,7 +60,8 @@ LIB_FILES = ft_bzero.s		\
 			ft_puts.s		\
 			ft_strcat.s		\
 			ft_memset.s		\
-			ft_memcpy.s
+			ft_memcpy.s		\
+			ft_strdup.s
 
 MAIN = $(addprefix $(SRCS_PATH)/, main.c)
 #------Path------#

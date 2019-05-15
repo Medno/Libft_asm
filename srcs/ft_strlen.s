@@ -15,6 +15,5 @@ _ft_strlen:
 	sub rax, rdi
 	dec rax
 
-	mov rsp, rbp
 	pop rbp
 	ret
