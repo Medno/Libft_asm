@@ -25,7 +25,7 @@ _print_str:
 	mov rax, 0x2000004
 	mov rdi, 1
 	mov rdx, 1
-	mov rsi, newline
+	lea rsi, [rel newline]
 	syscall
 	mov rax, 10
 	pop rdi
@@ -34,6 +34,6 @@ _print_str:
 	ret
 
 _null:
-	mov rsi, null_str
+	lea rsi, [rel null_str]
 	mov rdx, 6
 	jmp _print_str

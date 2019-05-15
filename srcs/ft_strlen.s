@@ -5,9 +5,11 @@ _ft_strlen:
 	push rbp
 	mov rbp, rsp
 
+	xor rax, rax
+	test rdi, rdi
+	jz _return
 	push rdi
 	mov rcx, -1
-	xor rax, rax
 	cld
 	repnz scasb
 	mov rax, rdi
@@ -15,5 +17,6 @@ _ft_strlen:
 	sub rax, rdi
 	dec rax
 
+_return:
 	pop rbp
 	ret

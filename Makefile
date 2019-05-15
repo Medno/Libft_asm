@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/05/14 15:30:48 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/05/15 11:28:11 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ INDEX = 1
 INCLUDES = ./inc/
 INC += -I$(INCLUDES)
 INC += -I $(LIB_PATH)
-HEAD = ''
+HEAD = $(INCLUDES)lib_asm.h
 
 #### FILES FROM LIB ####
 LIB_FILES = ft_bzero.s		\
@@ -61,7 +61,8 @@ LIB_FILES = ft_bzero.s		\
 			ft_strcat.s		\
 			ft_memset.s		\
 			ft_memcpy.s		\
-			ft_strdup.s
+			ft_strdup.s		\
+			ft_cat.s
 
 MAIN = $(addprefix $(SRCS_PATH)/, main.c)
 #------Path------#
@@ -105,7 +106,7 @@ $(OBJ_PATH)/%.o: $(SRCS_PATH)/%.s
 	@printf " | %3d%% - [$(INDEX)/$(NUMBER_FILES)]" $(PERCENT)
 
 test: $(NAME)
-	$(CC) $(C_FLAGS) $(MAIN) $^ -o output_test
+	$(CC) $(INC) $(C_FLAGS) $(MAIN) $^ -o output_test
 
 clean:
 	@if [ -d $(OBJ_PATH) ]; \

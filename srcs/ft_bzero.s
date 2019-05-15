@@ -1,6 +1,3 @@
-section .data
-	msg db "1"
-
 section .text
 	global _ft_bzero
 
@@ -17,12 +14,9 @@ _ft_bzero:
 	xor rcx, rcx
 	mov rcx, rsi
 	cld
-
-_set_to_zero:
-	mov byte [rdi + rcx - 1], 0
-	loop _set_to_zero
+	xor rax, rax
+	rep stosb
 
 _return:
-	mov rsp, rbp
 	pop rbp
 	ret

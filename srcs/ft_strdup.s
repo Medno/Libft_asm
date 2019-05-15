@@ -1,27 +1,30 @@
-section .data
-	te db "OUI"
-
 section .text
 	global _ft_strdup
-	extern _malloc, _ft_strlen, _ft_memcpy, _ft_puts
+	extern _malloc, _ft_strlen, _ft_memcpy
 
 _ft_strdup:
 	push rbp
 	mov rbp, rsp
 
+	test rdi, rdi
+	jz _return
 	call _ft_strlen
 
 	push rdi
-	mov rdi, rax
 	push rax
+	mov rdi, rax
 	call _malloc
 
-	pop rcx
+	pop rdx
 	pop rsi
-	cmp rax, 0
+	test rax, rax
 	jz _return
 	mov rdi, rax
 	call _ft_memcpy
+	push rax
+	add rax, rdx
+	mov byte [rax], 0
+	pop rax
 
 _return:
 	pop rbp
