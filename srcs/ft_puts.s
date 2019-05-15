@@ -22,16 +22,24 @@ _print_str:
 	mov rax, 0x2000004
 	mov rdi, 1
 	syscall
+	jc _error
 	mov rax, 0x2000004
 	mov rdi, 1
 	mov rdx, 1
 	lea rsi, [rel newline]
 	syscall
+	jc _error
 	mov rax, 10
+
+_return:
 	pop rdi
 	pop rsi
 	pop rbp
 	ret
+
+_error:
+	mov rax, -1
+	jmp _return
 
 _null:
 	lea rsi, [rel null_str]
