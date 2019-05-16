@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:01:17 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/15 14:58:57 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 11:47:36 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 	print_success(f_name);
 	return (0);
 }
-
+/*
 int	test_puts(void)
 {
 	int		i = 0;
@@ -117,7 +117,7 @@ int	test_puts(void)
 	}
 	return (0);
 }
-
+*/
 int	test_strlen(void)
 {
 	char *array[] = {
@@ -158,14 +158,40 @@ int	test_memset(void)
 
 int	test_memcpy(void)
 {
-	char str[10];
-	char to_cpy[5] = "Cooll";
+	char str[42];
+	char tmp[42];
+	char *to_cpy[] = {
+		"Cooll",
+		"",
+		"Martine fait du bateau",
+		"Martine fait du bateau",
+		"Toto avec Martine"
+	};
+	size_t	len[] = {
+		4,
+		1,
+		22,
+		15,
+		17
+	};
+	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
+	int	i = 0;
+	int	error = 0;
 
-	memset(str, '\0', 10);
-	ft_memcpy(str, to_cpy, 4);
-	if (strcmp(str, "Cool"))
-		print_error_s("Cool", str, "ft_memcpy");
-	else
+	while(i < nb)
+	{
+		memset(str, '\0', 42);
+		memset(tmp, '\0', 42);
+		ft_memcpy(str, to_cpy[i], len[i]);
+		memcpy(tmp, to_cpy[i], len[i]);
+		if (strcmp(str, tmp))
+		{
+			print_error_s(tmp, str, "ft_memcpy");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
 		print_success("ft_memcpy");
 	return (0);
 }
@@ -201,19 +227,294 @@ int	test_strdup(void)
 	return (0);
 }
 
-int	test_cat(char *file)
+int	test_cat(void)
 {
-	int	filefd;
+	int	output;
+	int	input;
+	int out = dup(1);
 
-	if ((filefd = open(file, O_RDONLY)) == -1)
+	if ((output = open("./cat_to_diff", O_WRONLY | O_TRUNC | O_CREAT, 0644)) == -1)
 		return (1);
-	ft_cat(filefd);
-	if (close(filefd) == -1)
+	if ((input = open("./srcs/ft_cat.s", O_RDONLY)) == -1)
 		return (1);
-	ft_cat(-1);
-//	ft_cat(0);
+
+	dup2(output, 1);
+	ft_cat(input);
+	if (close(output) == -1)
+		return (1);
+	if (close(input) == -1)
+		return (1);
+	dup2(out, 1);
+	if (system("diff ./cat_to_diff ./srcs/ft_cat.s"))
+		printf("Error on ft_cat\n");
+	else
+		print_success("ft_cats");
+	system("rm -rf ./cat_to_diff");
+	
 	return (0);
 }
+
+int	test_puts(int fd)
+{
+	char	*array[] = {
+		NULL,
+		"",
+		"Martine a la plage",
+		"\n\t\0\t",
+		"Martine a la montagne",
+		" Martine avec des	tabulations		"
+	};
+	char	buf[2048];
+	int		nb = sizeof(array) / sizeof(array[0]);
+	size_t	len;
+
+	while (nb != 0)
+	{
+		len = ft_strlen(array[nb - 1]);
+		ft_puts(array[nb - 1]);
+		if (read(fd, buf, len + 1) != -1)
+		{
+			if (strncmp(array[nb - 1], buf, len))
+				return (1);
+		}
+		nb--;
+	}
+	return (0);
+}
+
+int	test_putchar(int fd)
+{
+	char	buf[1];
+	int		i = -128;
+	int		res;
+	
+	while (i < 127)
+	{
+		res = ft_putchar(i);
+		if (read(fd, buf, 1) != -1)
+		{
+			if (i != buf[0])
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	write_on_fd(int (*f)(int), char *f_name)
+{
+	int	fds[2];
+	int	out;
+	int	res;
+
+	if ((out = dup(1)) == -1)
+	{
+		printf("Error: cannot duplicate stdout\n");
+		return (1);
+	}
+	if (pipe(fds) == -1)
+	{
+		printf("Error: cannot create pipe\n");
+		return (1);
+	}
+	if ((dup2(fds[1], 1)) == -1)
+	{
+		printf("Error: cannot duplicate writing fd\n");
+		return (1);
+	}
+	res = (*f)(fds[0]);
+	if (close(fds[0]) == -1 || close(fds[1]) == -1)
+	{
+		printf("Error: cannot close fd\n");
+		return (1);
+	}
+	if ((dup2(out, 1)) == -1)
+	{
+		printf("Error: cannot duplicate old stdout\n");
+		return (1);
+	}
+	if (res)
+		printf("Error in %s\n", f_name);
+	else
+		print_success(f_name);
+	return (0);
+}
+
+int	test_atoi(void)
+{
+	char *numbers[] = {
+		"",
+		"123",
+		"-123",
+		"+345",
+		" 3-45",
+		"    3 -45",
+		" +   3 -45",
+		" -   3 -45",
+		"    -3 -45",
+		"    +-3 -45",
+		"+3-45",
+		"--234",
+		"+-345"
+	};
+	int	len;
+	int	i = 0;
+	int	exp;
+	int	res;
+	int	error;
+
+	len = sizeof(numbers) / sizeof(numbers[0]);
+	error = 0;
+	while (i < len)
+	{
+		res = ft_atoi(numbers[i]);
+		exp = atoi(numbers[i]);
+		if (res != exp && (error = 1))
+			print_error_i(exp, res, "ft_atoi");
+		i++;
+	}
+	if (!error)
+		print_success("ft_atoi");
+	return (0);
+}
+
+int	test_pow_int(void)
+{
+	double	numbers[] = {
+		123,
+		321,
+		0,
+		5002,
+		-1,
+		404,
+		-25
+	};
+	double	powers[] = {
+		2,
+		3,
+		4,
+		2,
+		3,
+		0,
+		5
+	};
+	int n = sizeof(numbers) / sizeof(numbers[0]);
+	int	i = 0;
+	int	exp;
+	int	res;
+	int	error = 0;
+
+	while (i < n)
+	{
+		res = ft_pow_int(numbers[i], powers[i]);
+		exp = (int)pow(numbers[i], powers[i]);
+		if (res != exp)
+		{
+			print_error_i(exp, res, "ft_pow_int");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_pow_int");
+	return (0);
+}
+
+int	test_memcmp(void)
+{
+	char *a1[] = {
+		"abc",
+		"",
+		"not",
+		"\n",
+		"\0",
+		"Equal till now"
+	};
+	char *a2[] = {
+		"abc",
+		"",
+		"equal",
+		"\n",
+		"\0",
+		"Equal till here"
+	};
+	size_t	len[] = {
+		3,
+		1,
+		3,
+		1,
+		1,
+		12
+	};
+	int	nb = sizeof(a1) / sizeof(a1[0]);
+	int	i = 0;
+	int	exp;
+	int	res;
+	int error = 0;
+
+	while (i < nb)
+	{
+		exp = memcmp(a1[i], a2[i], len[i]);
+		res = ft_memcmp(a1[i], a2[i], len[i]);
+		if (exp != res)
+		{
+			print_error_i(exp, res, "ft_memcmp");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_memcmp");
+	return (0);
+}
+
+int	test_memccpy(void)
+{
+	char str[42];
+	char tmp[42];
+	char *to_cpy[] = {
+		"Cooll",
+		"",
+		"Martine fait du bateau",
+		"Martine fait du bateau",
+		"Toto avec Martine"
+	};
+	size_t	len[] = {
+		4,
+		1,
+		22,
+		15,
+		17
+	};
+	char	delim[] = {
+		'o',
+		'a',
+		'f',
+		'x',
+		'M'
+	};
+	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
+	int	i = 0;
+	int	error = 0;
+
+	while(i < nb)
+	{
+		memset(str, '\0', 42);
+		memset(tmp, '\0', 42);
+		ft_memccpy(str, to_cpy[i], delim[i], len[i]);
+		memccpy(tmp, to_cpy[i], delim[i], len[i]);
+		if (strcmp(str, tmp))
+		{
+			print_error_s(tmp, str, "ft_memccpy");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_memccpy");
+	return (0);
+}
+
 
 int	main(void)
 {
@@ -227,11 +528,21 @@ int	main(void)
 	test_isfn(ft_tolower, tolower, "ft_tolower");
 	test_isfn(ft_toupper, toupper, "ft_toupper");
 
-	test_puts();
+	write_on_fd(test_puts, "ft_puts");
 	test_strlen();
 	test_memset();
 	test_memcpy();
 	test_strdup();
-	test_cat(__FILE__);
+	test_cat();
+  printf("------------------Bonus------------------\n");
+	write_on_fd(test_putchar, "ft_putchar");
+	test_atoi();
+	test_pow_int();
+	test_memcmp();
+	test_isfn(ft_isupper, isupper, "ft_isupper");
+	test_isfn(ft_islower, islower, "ft_islower");
+	test_memccpy();
+	test_isfn(ft_isblank, isblank, "ft_isblank");
+	test_isfn(ft_isspace, isspace, "ft_isspace");
 	return (0);
 }
