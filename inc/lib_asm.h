@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 09:34:49 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/16 11:36:26 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 12:17:42 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	*ft_memccpy(void *restrict dst, const void *restrict src, int c, size_t n);
 int		ft_isblank(int c);
 int		ft_isspace(int c);
 
-void	print_success(char *f_name);
+void	print_success(char *f_name, int n);
 void	print_error_s(char *exp, char *res, char *f_name);
 void	print_error_i(int exp, int res, char *f_name);
 void	print_error_zu(size_t exp, size_t res, char *f_name);

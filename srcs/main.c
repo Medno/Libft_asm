@@ -6,16 +6,16 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:01:17 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/16 11:59:57 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 12:18:47 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_asm.h"
 
-void	print_success(char *f_name)
+void	print_success(char *f_name, int n)
 {
-	printf("%s%s%s tests passed with %ssuccess%s\n",
-		BOLD, f_name, EOC, GREEN, EOC);
+	printf("%s%s%s tests passed with %ssuccess%s (%d tests)\n",
+		BOLD, f_name, EOC, GREEN, EOC, n);
 }
 
 void	print_error_s(char *exp, char *res, char *f_name)
@@ -55,22 +55,36 @@ int	test_bzero(void)
 			print_error_s("", buf, "ft_bzero");
 		i++;
 	}
-	print_success("ft_bzero");
+	print_success("ft_bzero", 2);
 	return (0);
 }
 
 int	test_strcat(void)
 {
-	char str[10] = "";
-	char to_cat[4] = "987";
+	char str[255] = "";
+	char tmp[255] = "";
+	char *to_cat[] = {
+		"987", "852", "", "coucou", "404"
+		"123456789", "finish him"
+		"tocat", "some str", "another oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+	};
+	int	n = sizeof(to_cat) / sizeof(to_cat[0]);
+	int	i = 0;
+	int	error = 0;
 
-	ft_strcat(str, "12345");
-	ft_strcat(str, to_cat);
-	ft_strcat(str, "0");
-	if (strcmp(str, "123459870"))
-		print_error_s("123459870", str, "ft_strcat");
-	else
-		print_success("ft_strcat");
+	while (i < n)
+	{
+		ft_strcat(str, to_cat[i]);
+		strcat(tmp, to_cat[i]);
+		if (strcmp(str, tmp))
+		{
+			print_error_s(tmp, str, "ft_strcat");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_strcat", n);
 	return (0);
 }
 
@@ -89,7 +103,7 @@ int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 		}
 		i++;
 	}
-	print_success(f_name);
+	print_success(f_name, i + 127);
 	return (0);
 }
 
@@ -102,9 +116,10 @@ int	test_strlen(void)
 		"Hello",
 		"qwertyuiopasdfghjklzxcvbnm"
 	};
+	int	n = sizeof(array) / sizeof(array[0]);
 	int	i = 0;
 
-	while (i < 5)
+	while (i < n)
 	{
 		if ((!i && ft_strlen(array[i]))
 			|| (i != 0 && ft_strlen(array[i]) != strlen(array[i])))
@@ -114,20 +129,30 @@ int	test_strlen(void)
 		}
 		i++;
 	}
-	print_success("ft_strlen");
+	print_success("ft_strlen", n);
 	return (0);
 }
 
 int	test_memset(void)
 {
-	char str[10];
+	char str[255];
+	char tmp[255];
+	int i = 9;
+	int	error = 0;
 
-	ft_memset(str, '\0', 10);
-	ft_memset(str, 'a', 5);
-	if (strcmp(str, "aaaaa"))
-		print_error_s("aaaaa", str, "ft_memset");
-	else
-		print_success("ft_memset");
+	while (i < 255)
+	{
+		ft_memset(str, i, i);
+		memset(tmp, i, i);
+		if (strncmp(str, tmp, i))
+		{
+			print_error_s("aaaaa", str, "ft_memset");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_memset", i);
 	return (0);
 }
 
@@ -149,11 +174,11 @@ int	test_memcpy(void)
 		15,
 		17
 	};
-	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
+	int	n = sizeof(to_cpy) / sizeof(to_cpy[0]);
 	int	i = 0;
 	int	error = 0;
 
-	while(i < nb)
+	while(i < n)
 	{
 		memset(str, '\0', 42);
 		memset(tmp, '\0', 42);
@@ -167,7 +192,7 @@ int	test_memcpy(void)
 		i++;
 	}
 	if (!error)
-		print_success("ft_memcpy");
+		print_success("ft_memcpy", n);
 	return (0);
 }
 
@@ -180,12 +205,13 @@ int	test_strdup(void)
 		"\n\n\nNewline overflow\n\n\n",
 		"Did the test passed ?"
 	};
-	int		i;
-	int		passed;
+	int	n = sizeof(to_dup) / sizeof(to_dup[0]);
+	int	i;
+	int	passed;
 
 	i = 0;
 	passed = 1;
-	while (i < 4)
+	while (i < n)
 	{
 		str = ft_strdup(to_dup[i]);
 		if ((!i && str) || (i != 0 && strcmp(str, to_dup[i])))
@@ -198,7 +224,7 @@ int	test_strdup(void)
 		i++;
 	}
 	if (passed)
-		print_success("ft_strdup");
+		print_success("ft_strdup", n);
 	return (0);
 }
 
@@ -223,13 +249,12 @@ int	test_cat(void)
 	if (system("diff ./cat_to_diff ./srcs/ft_cat.s"))
 		printf("Error on ft_cat\n");
 	else
-		print_success("ft_cats");
+		print_success("ft_cats", 1);
 	system("rm -rf ./cat_to_diff");
-	
 	return (0);
 }
 
-int	test_puts(int fd)
+int	test_puts(int fd, int *n)
 {
 	char	*array[] = {
 		NULL,
@@ -240,29 +265,31 @@ int	test_puts(int fd)
 		" Martine avec des	tabulations		"
 	};
 	char	buf[2048];
-	int		nb = sizeof(array) / sizeof(array[0]);
 	size_t	len;
+	int	i = 0;
+	*n = sizeof(array) / sizeof(array[0]);
 
-	while (nb != 0)
+	while (i < *n)
 	{
-		len = ft_strlen(array[nb - 1]);
-		ft_puts(array[nb - 1]);
+		len = ft_strlen(array[i]);
+		ft_puts(array[i]);
 		if (read(fd, buf, len + 1) != -1)
 		{
-			if (strncmp(array[nb - 1], buf, len))
+			if (strncmp(array[i], buf, len))
 				return (1);
 		}
-		nb--;
+		n--;
 	}
 	return (0);
 }
 
-int	test_putchar(int fd)
+int	test_putchar(int fd, int *n)
 {
 	char	buf[1];
 	int		i = -128;
 	int		res;
 	
+	*n = 0;
 	while (i < 127)
 	{
 		res = ft_putchar(i);
@@ -271,16 +298,18 @@ int	test_putchar(int fd)
 			if (i != buf[0])
 				return (1);
 		}
+		(*n)++;
 		i++;
 	}
 	return (0);
 }
 
-int	write_on_fd(int (*f)(int), char *f_name)
+int	write_on_fd(int (*f)(int, int*), char *f_name)
 {
 	int	fds[2];
 	int	out;
 	int	res;
+	int	n;
 
 	if ((out = dup(1)) == -1)
 	{
@@ -297,7 +326,7 @@ int	write_on_fd(int (*f)(int), char *f_name)
 		printf("Error: cannot duplicate writing fd\n");
 		return (1);
 	}
-	res = (*f)(fds[0]);
+	res = (*f)(fds[0], &n);
 	if (close(fds[0]) == -1 || close(fds[1]) == -1)
 	{
 		printf("Error: cannot close fd\n");
@@ -311,7 +340,7 @@ int	write_on_fd(int (*f)(int), char *f_name)
 	if (res)
 		printf("Error in %s\n", f_name);
 	else
-		print_success(f_name);
+		print_success(f_name, n);
 	return (0);
 }
 
@@ -349,7 +378,7 @@ int	test_atoi(void)
 		i++;
 	}
 	if (!error)
-		print_success("ft_atoi");
+		print_success("ft_atoi", len);
 	return (0);
 }
 
@@ -391,7 +420,7 @@ int	test_pow_int(void)
 		i++;
 	}
 	if (!error)
-		print_success("ft_pow_int");
+		print_success("ft_pow_int", n);
 	return (0);
 }
 
@@ -421,13 +450,13 @@ int	test_memcmp(void)
 		1,
 		12
 	};
-	int	nb = sizeof(a1) / sizeof(a1[0]);
+	int	n = sizeof(a1) / sizeof(a1[0]);
 	int	i = 0;
 	int	exp;
 	int	res;
 	int error = 0;
 
-	while (i < nb)
+	while (i < n)
 	{
 		exp = memcmp(a1[i], a2[i], len[i]);
 		res = ft_memcmp(a1[i], a2[i], len[i]);
@@ -439,7 +468,7 @@ int	test_memcmp(void)
 		i++;
 	}
 	if (!error)
-		print_success("ft_memcmp");
+		print_success("ft_memcmp", n);
 	return (0);
 }
 
@@ -474,11 +503,11 @@ int	test_memccpy(void)
 		't',
 		'T'
 	};
-	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
+	int	n = sizeof(to_cpy) / sizeof(to_cpy[0]);
 	int	i = 0;
 	int	error = 0;
 
-	while(i < nb)
+	while (i < n)
 	{
 		memset(str, '\0', 42);
 		memset(tmp, '\0', 42);
@@ -492,7 +521,7 @@ int	test_memccpy(void)
 		i++;
 	}
 	if (!error)
-		print_success("ft_memccpy");
+		print_success("ft_memccpy", n);
 	return (0);
 }
 
@@ -514,7 +543,7 @@ int	main(void)
 	test_memcpy();
 	test_strdup();
 	test_cat();
-  printf("------------------Bonus------------------\n");
+	printf("------------------Bonus------------------\n");
 	write_on_fd(test_putchar, "ft_putchar");
 	test_atoi();
 	test_pow_int();
