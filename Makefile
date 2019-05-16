@@ -6,13 +6,14 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/05/16 11:36:20 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/05/16 11:54:18 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #------Name of the project------#
 
 NAME = libfts.a
+TEST_NAME = tests_lib_asm
 
 #------Compilation's flags------#
 
@@ -115,7 +116,8 @@ $(OBJ_PATH)/%.o: $(SRCS_PATH)/%.s
 	@printf " | %3d%% - [$(INDEX)/$(NUMBER_FILES)]" $(PERCENT)
 
 test: $(NAME)
-	$(CC) $(INC) $(C_FLAGS) $(MAIN) $^ -o output_test
+	$(CC) $(INC) $(C_FLAGS) $(MAIN) $^ -o $(TEST_NAME)
+	@printf "$(BOLD_GREEN)⤖     $(TEST_NAME)$(EOC) created $(BOLD_GREEN)✓$(EOC)\n"
 
 clean:
 	@if [ -d $(OBJ_PATH) ]; \
@@ -130,6 +132,12 @@ fclean: clean
 		rm -Rf $(NAME); \
 		echo "$(BOLD_GREEN)fclean ✓$(EOC)"; \
 	fi;
+	@if [ -e $(TEST_NAME) ]; \
+	then \
+		rm -Rf $(TEST_NAME); \
+		echo "$(BOLD_GREEN)$(TEST_NAME) deleted ✓$(EOC)"; \
+	fi;
+
 
 re: fclean all
 

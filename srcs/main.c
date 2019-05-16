@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:01:17 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/16 11:47:36 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 11:59:57 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,32 +92,7 @@ int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 	print_success(f_name);
 	return (0);
 }
-/*
-int	test_puts(void)
-{
-	int		i = 0;
-	char	*to_display[] = {
-		NULL,
-		"",
-		"Martine a la plage",
-		"Martine fait du ski",
-		"Martine voyage"
-	};
-	int exp, res;
 
-	while (i < 5)
-	{
-		printf("----------------------Start of printing----------------------\n");
-		exp = puts(to_display[i]);
-		res = ft_puts(to_display[i]);
-		printf("---------------------- End of printing ----------------------\n");
-		if (exp != res)
-			print_error_i(exp, res, "ft_puts");
-		i++;
-	}
-	return (0);
-}
-*/
 int	test_strlen(void)
 {
 	char *array[] = {
@@ -477,21 +452,27 @@ int	test_memccpy(void)
 		"",
 		"Martine fait du bateau",
 		"Martine fait du bateau",
-		"Toto avec Martine"
+		"Toto avec Martine",
+		"Toto qui fait memccpy",
+		"Toto qui fait memccpy deux fois"
 	};
 	size_t	len[] = {
 		4,
 		1,
 		22,
 		15,
-		17
+		17,
+		15,
+		15
 	};
 	char	delim[] = {
 		'o',
 		'a',
 		'f',
 		'x',
-		'M'
+		'M',
+		't',
+		'T'
 	};
 	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
 	int	i = 0;
@@ -514,7 +495,6 @@ int	test_memccpy(void)
 		print_success("ft_memccpy");
 	return (0);
 }
-
 
 int	main(void)
 {
