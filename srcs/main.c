@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:01:17 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/16 11:41:22 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 11:47:36 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int	test_strdup(void)
 	return (0);
 }
 
-int	test_cat(char *file)
+int	test_cat(void)
 {
 	int	output;
 	int	input;
