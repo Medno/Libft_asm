@@ -20,6 +20,7 @@ _ft_strcat:
 	pop rcx
 	cld
 	rep movsb
+	mov byte [rdi], 0
 	mov rax, rdi
 
 	pop rbp

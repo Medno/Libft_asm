@@ -38,7 +38,7 @@ void	print_error_zu(size_t exp, size_t res, char *f_name)
 
 int	test_bzero(void)
 {
-	char	*str = strdup("I'm not null");
+	char	str[13] = "I'm not null";
 	char	buf[6] = "*****";
 	int		i;
 
@@ -67,7 +67,6 @@ int	test_strcat(void)
 	ft_strcat(str, "12345");
 	ft_strcat(str, to_cat);
 	ft_strcat(str, "0");
-	printf("str: %s\n", str);
 	if (strcmp(str, "123459870"))
 		print_error_s("123459870", str, "ft_strcat");
 	else
@@ -97,26 +96,25 @@ int	test_isfn(int (*f)(int), int (*real)(int), char *f_name)
 int	test_puts(void)
 {
 	int		i = 0;
-	char	*to_display = {
+	char	*to_display[] = {
 		NULL,
 		"",
 		"Martine a la plage",
 		"Martine fait du ski",
 		"Martine voyage"
-	}
+	};
+	int exp, res;
+
 	while (i < 5)
 	{
-		printf("Value of puts: %d\n");
+		printf("----------------------Start of printing----------------------\n");
+		exp = puts(to_display[i]);
+		res = ft_puts(to_display[i]);
+		printf("---------------------- End of printing ----------------------\n");
+		if (exp != res)
+			print_error_i(exp, res, "ft_puts");
+		i++;
 	}
-	printf("Value of puts: %d\n", puts(NULL));
-	printf("Value of puts: %d\n", puts(""));
-	printf("Value of puts: %d\n", puts("toto a la plage"));
-	printf("Value of puts: %d\n", puts("toto"));
-	printf("Value of puts: %d\n", puts("toto a la mer"));
-	printf("Value of ft_puts: %d\n", ft_puts(NULL));
-	printf("Value of ft_puts: %d\n", ft_puts(""));
-	printf("Value of ft_puts: %d\n", ft_puts("toto a la plage"));
-	printf("Value of ft_puts: %d\n", ft_puts("toto a la montagne"));
 	return (0);
 }
 */
@@ -151,7 +149,6 @@ int	test_memset(void)
 
 	ft_memset(str, '\0', 10);
 	ft_memset(str, 'a', 5);
-	printf("Memset: |%s|\n", str);
 	if (strcmp(str, "aaaaa"))
 		print_error_s("aaaaa", str, "ft_memset");
 	else
@@ -230,7 +227,7 @@ int	test_strdup(void)
 	return (0);
 }
 
-int	test_cat(void)
+int	test_cat(char *file)
 {
 	int	output;
 	int	input;
@@ -521,6 +518,8 @@ int	test_memccpy(void)
 
 int	main(void)
 {
+	test_bzero();
+	test_strcat();
 	test_isfn(ft_isalpha, isalpha, "ft_isalpha");
 	test_isfn(ft_isdigit, isdigit, "ft_isdigit");
 	test_isfn(ft_isalnum, isalnum, "ft_isalnum");
@@ -529,16 +528,13 @@ int	main(void)
 	test_isfn(ft_tolower, tolower, "ft_tolower");
 	test_isfn(ft_toupper, toupper, "ft_toupper");
 
-	test_bzero();
-	test_strlen();
 	write_on_fd(test_puts, "ft_puts");
-//	test_puts();
-	test_strcat();
+	test_strlen();
 	test_memset();
 	test_memcpy();
-	//test_strdup();
+	test_strdup();
 	test_cat();
-	printf("------------------Bonus------------------\n");
+  printf("------------------Bonus------------------\n");
 	write_on_fd(test_putchar, "ft_putchar");
 	test_atoi();
 	test_pow_int();
