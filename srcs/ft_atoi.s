@@ -19,7 +19,7 @@ _ft_atoi:
 	xor rdx, rdx
 	xor rax, rax
 
-_is_sp
+_is_sp:
 	cmp byte [rsi], ' '
 	je _sp
 

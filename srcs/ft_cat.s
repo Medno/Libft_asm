@@ -13,7 +13,7 @@ _ft_cat:
 	cmp rdi, 0
 	jl _return
 
-_read_fd
+_read_fd:
 	lea rsi, [rel buf]
 	mov rdx, BUF_SIZE
 	mov rax, 0x2000003

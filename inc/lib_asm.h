@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 09:34:49 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/15 14:11:08 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 11:36:26 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <math.h>
 
 #define RED "\033[01;31m"
 #define GREEN "\033[01;32m"
@@ -43,6 +44,13 @@ char	*ft_strdup(const char *s1);
 void	ft_cat(int fd);
 int		ft_putchar(int c);
 int		ft_atoi(char *str);
+int		ft_pow_int(int n, int pow);
+int		ft_memcmp(const void *s1, const void *s2, size_t n);
+int		ft_islower(int c);
+int		ft_isupper(int c);
+void	*ft_memccpy(void *restrict dst, const void *restrict src, int c, size_t n);
+int		ft_isblank(int c);
+int		ft_isspace(int c);
 
 void	print_success(char *f_name);
 void	print_error_s(char *exp, char *res, char *f_name);

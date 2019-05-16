@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:01:17 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/05/15 14:32:12 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/05/16 11:41:22 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,15 +161,40 @@ int	test_memset(void)
 
 int	test_memcpy(void)
 {
-	char str[10];
-	char to_cpy[5] = "Cooll";
+	char str[42];
+	char tmp[42];
+	char *to_cpy[] = {
+		"Cooll",
+		"",
+		"Martine fait du bateau",
+		"Martine fait du bateau",
+		"Toto avec Martine"
+	};
+	size_t	len[] = {
+		4,
+		1,
+		22,
+		15,
+		17
+	};
+	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
+	int	i = 0;
+	int	error = 0;
 
-	memset(str, '\0', 10);
-	ft_memcpy(str, to_cpy, 4);
-	printf("Memcpy: |%s|\n", str);
-	if (strcmp(str, "Cool"))
-		print_error_s("Cool", str, "ft_memcpy");
-	else
+	while(i < nb)
+	{
+		memset(str, '\0', 42);
+		memset(tmp, '\0', 42);
+		ft_memcpy(str, to_cpy[i], len[i]);
+		memcpy(tmp, to_cpy[i], len[i]);
+		if (strcmp(str, tmp))
+		{
+			print_error_s(tmp, str, "ft_memcpy");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
 		print_success("ft_memcpy");
 	return (0);
 }
@@ -356,6 +381,144 @@ int	test_atoi(void)
 	return (0);
 }
 
+int	test_pow_int(void)
+{
+	double	numbers[] = {
+		123,
+		321,
+		0,
+		5002,
+		-1,
+		404,
+		-25
+	};
+	double	powers[] = {
+		2,
+		3,
+		4,
+		2,
+		3,
+		0,
+		5
+	};
+	int n = sizeof(numbers) / sizeof(numbers[0]);
+	int	i = 0;
+	int	exp;
+	int	res;
+	int	error = 0;
+
+	while (i < n)
+	{
+		res = ft_pow_int(numbers[i], powers[i]);
+		exp = (int)pow(numbers[i], powers[i]);
+		if (res != exp)
+		{
+			print_error_i(exp, res, "ft_pow_int");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_pow_int");
+	return (0);
+}
+
+int	test_memcmp(void)
+{
+	char *a1[] = {
+		"abc",
+		"",
+		"not",
+		"\n",
+		"\0",
+		"Equal till now"
+	};
+	char *a2[] = {
+		"abc",
+		"",
+		"equal",
+		"\n",
+		"\0",
+		"Equal till here"
+	};
+	size_t	len[] = {
+		3,
+		1,
+		3,
+		1,
+		1,
+		12
+	};
+	int	nb = sizeof(a1) / sizeof(a1[0]);
+	int	i = 0;
+	int	exp;
+	int	res;
+	int error = 0;
+
+	while (i < nb)
+	{
+		exp = memcmp(a1[i], a2[i], len[i]);
+		res = ft_memcmp(a1[i], a2[i], len[i]);
+		if (exp != res)
+		{
+			print_error_i(exp, res, "ft_memcmp");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_memcmp");
+	return (0);
+}
+
+int	test_memccpy(void)
+{
+	char str[42];
+	char tmp[42];
+	char *to_cpy[] = {
+		"Cooll",
+		"",
+		"Martine fait du bateau",
+		"Martine fait du bateau",
+		"Toto avec Martine"
+	};
+	size_t	len[] = {
+		4,
+		1,
+		22,
+		15,
+		17
+	};
+	char	delim[] = {
+		'o',
+		'a',
+		'f',
+		'x',
+		'M'
+	};
+	int	nb = sizeof(to_cpy) / sizeof(to_cpy[0]);
+	int	i = 0;
+	int	error = 0;
+
+	while(i < nb)
+	{
+		memset(str, '\0', 42);
+		memset(tmp, '\0', 42);
+		ft_memccpy(str, to_cpy[i], delim[i], len[i]);
+		memccpy(tmp, to_cpy[i], delim[i], len[i]);
+		if (strcmp(str, tmp))
+		{
+			print_error_s(tmp, str, "ft_memccpy");
+			error = 1;
+		}
+		i++;
+	}
+	if (!error)
+		print_success("ft_memccpy");
+	return (0);
+}
+
+
 int	main(void)
 {
 	test_isfn(ft_isalpha, isalpha, "ft_isalpha");
@@ -368,14 +531,22 @@ int	main(void)
 
 	test_bzero();
 	test_strlen();
+	write_on_fd(test_puts, "ft_puts");
 //	test_puts();
 	test_strcat();
 	test_memset();
 	test_memcpy();
 	//test_strdup();
 	test_cat();
-	write_on_fd(test_puts, "ft_puts");
+	printf("------------------Bonus------------------\n");
 	write_on_fd(test_putchar, "ft_putchar");
 	test_atoi();
+	test_pow_int();
+	test_memcmp();
+	test_isfn(ft_isupper, isupper, "ft_isupper");
+	test_isfn(ft_islower, islower, "ft_islower");
+	test_memccpy();
+	test_isfn(ft_isblank, isblank, "ft_isblank");
+	test_isfn(ft_isspace, isspace, "ft_isspace");
 	return (0);
 }
