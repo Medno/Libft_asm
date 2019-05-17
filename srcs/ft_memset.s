@@ -5,13 +5,14 @@ _ft_memset:
 	push rbp
 	mov rbp, rsp
 
+	mov r9, rdi
 	xor rax, rax
 	mov rax, rsi
 	mov rcx, rdx
 	cld
 	rep stosb
 
-	mov rax, rdi
+	mov rax, r9
 
 	pop rbp
 	ret

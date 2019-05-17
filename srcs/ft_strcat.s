@@ -1,27 +1,25 @@
 section .text
 	global _ft_strcat
-	extern _ft_strlen, _ft_puts
+	extern _ft_strlen
 
 _ft_strcat:
 	push rbp
 	mov rbp, rsp
 
-	push rdi
+	mov r9, rdi
 	mov rdi, rsi
 	call _ft_strlen
-	mov rcx, rax
-	pop rdi
-	push rcx
+	push rax
+	mov rdi, r9
 
 	call _ft_strlen
-	mov rbx, rax
-	add rdi, rbx
+	add rdi, rax
 
 	pop rcx
 	cld
 	rep movsb
 	mov byte [rdi], 0
-	mov rax, rdi
+	mov rax, r9
 
 	pop rbp
 	ret
