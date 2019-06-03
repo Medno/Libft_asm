@@ -10,8 +10,6 @@ _ft_puts:
 	push rbp
 	mov rbp, rsp
 
-	push rsi
-	push rdi
 	test rdi, rdi
 	jz _null
 	call _ft_strlen
@@ -32,8 +30,6 @@ _print_str:
 	mov rax, 10
 
 _return:
-	pop rdi
-	pop rsi
 	pop rbp
 	ret
 
