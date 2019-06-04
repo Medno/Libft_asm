@@ -15,7 +15,7 @@ _ft_atoi:
 	mov rcx, rax
 	cld
 
-	mov rbx, 1
+	mov r9, 1
 	xor rdx, rdx
 	xor rax, rax
 
@@ -62,7 +62,7 @@ _convert:
 
 _end:
 	mov rax, rdx
-	imul rax, rbx
+	imul rax, r9
 
 _return:
 	pop rbp
@@ -73,18 +73,18 @@ _next_not_digit:
 	pop rdi
 	pop rax
 	mov rax, rdx
-	imul rax, rbx
+	imul rax, r9
 	jmp _return
 
 _not_digit:
 	pop rdi
 	pop rax
 	mov rax, rdx
-	imul rax, rbx
+	imul rax, r9
 	jmp _return
 
 _neg:
-	mov rbx, -1
+	mov r9, -1
 	lodsb
 	loop _convert
 

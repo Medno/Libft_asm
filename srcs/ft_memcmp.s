@@ -10,9 +10,9 @@ _ft_memcmp:
 	mov rcx, rdx
 	repe cmpsb
 	je _return
-	movzx rbx, byte [rdi - 1]
+	movzx r9, byte [rdi - 1]
 	movzx rcx, byte [rsi - 1]
-	mov	rax, rbx
+	mov	rax, r9
 	sub	rax, rcx
 
 _return:
