@@ -1,3 +1,6 @@
+; int		ft_isblank(int c);
+; Check either the int is a blank character
+
 section .text
 	global _ft_isblank
 

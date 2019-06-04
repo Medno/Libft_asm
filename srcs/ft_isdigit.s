@@ -1,3 +1,6 @@
+; int		ft_isdigit(int c);
+; Check either the int is an integer char
+
 section .text
 	global _ft_isdigit
 

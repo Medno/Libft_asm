@@ -1,3 +1,6 @@
+; int		ft_tolower(int c);
+; Return the lower value of a alphabet char
+
 section .text
 	global _ft_tolower
 

@@ -1,3 +1,6 @@
+; int		ft_isspace(int c);
+; Check either the int is a space character (including tab and newline)
+
 section .text
 	global _ft_isspace
 

@@ -1,3 +1,6 @@
+; int		ft_pow_int(int n, int pow);
+; Compute n power pow (integer value)
+
 section .text
 	global _ft_pow_int
 
@@ -8,14 +11,14 @@ _ft_pow_int:
 	push rsi
 	xor rax, rax
 	test rsi, rsi
-	jl _return
-	jz _one
+	jl _return		; Cannot handle negative power
+	jz _one			; Power of zero, return 1
 	lea rax, [rdi]
 	mov rcx, rsi
 	dec rcx
 
 _rec:
-	imul rax, rdi
+	imul rax, rdi	; Save result of the multiplication to rax (final result)
 	loop _rec
 
 _return:

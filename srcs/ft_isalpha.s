@@ -1,3 +1,6 @@
+; int		ft_isalpha(int c);
+; Check either the int is an alphabet char
+
 section .text
 	global _ft_isalpha
 
@@ -19,7 +22,6 @@ _lower_case:
 	cmp rdi, 'a'
 	jl _return
 	mov rax, 1
-	jmp _return
 
 _return:
     mov rsp, rbp

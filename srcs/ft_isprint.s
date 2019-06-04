@@ -1,3 +1,6 @@
+; int		ft_isprint(int c);
+; Check either the int char is printable
+
 section .text
 	global _ft_isprint
 

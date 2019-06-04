@@ -1,3 +1,5 @@
+; int		ft_islower(int c);
+; Check either the int is a lower case alphabet char
 section .text
 	global _ft_islower
 

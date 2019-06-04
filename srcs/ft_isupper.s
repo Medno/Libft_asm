@@ -1,3 +1,6 @@
+; int		ft_isupper(int c);
+; Check either the int is an upper case alphabet char
+
 section .text
 	global _ft_isupper
 

@@ -1,3 +1,6 @@
+; int		ft_puts(const char *s);
+; Display the s string or (null) if s is NULL pointer
+
 section .data
 	null_str	db "(null)"
 	newline		db 0x0a
@@ -12,8 +15,8 @@ _ft_puts:
 
 	test rdi, rdi
 	jz _null
-	call _ft_strlen
-	mov rdx, rax
+	call _ft_strlen			; Get the str length
+	mov rdx, rax			; Save length
 	mov rsi, rdi
 
 _print_str:

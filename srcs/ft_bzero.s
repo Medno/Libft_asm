@@ -1,3 +1,6 @@
+; void	ft_bzero(void *s, size_t n);
+; Put a \0 on every value of s until n
+
 section .text
 	global _ft_bzero
 
@@ -12,10 +15,10 @@ _ft_bzero:
 	jz _return
 
 	xor rcx, rcx
-	mov rcx, rsi
+	mov rcx, rsi	; Put the length on the counter register
 	cld
 	xor rax, rax
-	rep stosb
+	rep stosb		; Loop over all values on rdi, putting rax (0)
 
 _return:
 	pop rbp

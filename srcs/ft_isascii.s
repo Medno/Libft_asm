@@ -1,3 +1,6 @@
+; int		ft_isascii(int c);
+; Check either the int is in ascii table (between 0 and 127)
+
 section .text
 	global _ft_isascii
 

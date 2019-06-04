@@ -1,3 +1,6 @@
+; int		ft_putchar(int c);
+; Display the c character
+
 section .text
 	global _ft_putchar
 
@@ -20,3 +23,4 @@ _return:
 
 _error:
 	mov rax, -1
+	jmp _return

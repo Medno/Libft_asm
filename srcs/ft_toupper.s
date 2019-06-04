@@ -1,3 +1,6 @@
+; int		ft_toupper(int c);
+; Return the upper case of c
+
 section .text
 	global _ft_toupper
 
